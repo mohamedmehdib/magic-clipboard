@@ -113,7 +113,7 @@ export default function List() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
+  }, [user,fetchCopiedTexts]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;

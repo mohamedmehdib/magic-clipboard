@@ -98,7 +98,7 @@ const SignIn = () => {
 
         <div className="mt-4 text-center">
           <p className="text-sm">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <a href="/SignUp" className="text-blue-500 hover:underline">
               Sign Up
             </a>
@@ -106,7 +106,7 @@ const SignIn = () => {
         </div>
         <div className="mt-2 text-center">
           <p className="text-sm">
-            Don't Remeber your password ?{' '}
+            Don&apos;t Remeber your password ?{' '}
             <a href="/Reset" className="text-red-500 hover:underline">
               Reset
             </a>

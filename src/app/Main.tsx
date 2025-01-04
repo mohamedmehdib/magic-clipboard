@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import UploadText from "./UploadText";
 import List from "./List";
 
