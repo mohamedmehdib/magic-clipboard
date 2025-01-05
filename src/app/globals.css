@@ -1,14 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /* globals.css */
-html, body {
-    height: 100%;
-    margin: 0;
+
+/* Default light mode styles */
+body {
+    background-color: white;
+    color: black;
   }
   
-  #__next {
-    height: 100%;
+  /* Dark mode styles */
+  body.dark {
+    background-color: black;
+    color: white;
   }
   

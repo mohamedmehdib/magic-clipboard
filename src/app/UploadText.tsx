@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import supabase from "../lib/supabaseClient";
 import { useAuth } from "@/lib/useAuth";
+import { useTheme } from "@/Context/ThemeContext";
 
 export default function UploadText() {
   const { user } = useAuth();
   const [text, setText] = useState("");
+  const { theme } = useTheme();
 
   const handleUploadText = async () => {
     if (!user || !user.email) {
@@ -59,24 +61,24 @@ export default function UploadText() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-10 md:p-14 rounded-lg shadow-md">
+    <div className="max-w-xl mx-auto px-4 py-10 sm:p-10 md:p-14 rounded-lg shadow-md">
       <link
         rel="stylesheet"
         href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
       ></link>
-      <h2 className="text-2xl text-white mb-4">Add text to your Clipboard!</h2>
+      <h2 className="text-xl md:text-2xl mb-4">Add text to your Clipboard!</h2>
 
       <div className="relative flex flex-col">
         <textarea
           placeholder="Enter text"
           value={text}
           onChange={handleTextChange}
-          className="flex-grow p-3 mb-4 text-white bg-black border-2 border-white focus:outline-none resize-none rounded-md"
+          className={`flex-grow p-3 mb-4 border-2 border-white focus:outline-none resize-none rounded-md ${theme === "dark" ? "text-white bg-black" : "border-black"}`}
           style={{ minHeight: "25vh", overflow: "hidden" }}
         />
         <button
           onClick={handleUploadText}
-          className="absolute w-12 h-12 right-2 top-2 bg-blue-500 hover:bg-blue-700 text-white transition-all rounded-md"
+          className="absolute w-12 h-12 right-2 top-2 bg-blue-500 hover:bg-blue-700 transition-all rounded-md text-white"
         >
           <i className="uil uil-plus"></i>
         </button>

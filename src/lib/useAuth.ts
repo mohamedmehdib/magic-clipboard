@@ -35,7 +35,6 @@ export const useAuth = () => {
       }
     );
 
-    // Change here: unsubscribe from the auth listener correctly
     return () => {
       authListener?.subscription.unsubscribe();
     };

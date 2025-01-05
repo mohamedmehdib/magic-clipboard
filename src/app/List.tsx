@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import supabase from "../lib/supabaseClient";
 import { useAuth } from "@/lib/useAuth";
+import { useTheme } from "@/Context/ThemeContext";
 
 type CopiedText = {
   text: string;
@@ -13,7 +14,20 @@ export default function List() {
   const [copiedTexts, setCopiedTexts] = useState<CopiedText[]>([]);
   const [loading, setLoading] = useState(true);
   const [copy, setCopy] = useState(-1);
-  const [view, setView] = useState(true);
+  const [view, setView] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editText, setEditText] = useState<string>("");
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { theme } = useTheme();
+  
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [editText]);
 
   const fetchCopiedTexts = useCallback(async () => {
     if (!user || !user.email) return;
@@ -76,7 +90,12 @@ export default function List() {
 
   const copyToClipboard = async (text: string, index: number) => {
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        document.execCommand("copy", true, text);
+      }
+      
       setCopy(index);
 
       const updatedTexts = copiedTexts.map((item, i) =>
@@ -99,6 +118,33 @@ export default function List() {
       }, 5000);
     } catch (error) {
       console.error("Failed to copy text:", error);
+    }
+  };
+
+  const handleEdit = (index: number, currentText: string) => {
+    setEditingIndex(index);
+    setEditText(currentText);
+  };
+
+  const handleSaveEdit = async () => {
+    if (editingIndex === null || !user || !user.email) return;
+
+    try {
+      const updatedTexts = [...copiedTexts];
+      updatedTexts[editingIndex].text = editText;
+
+      const { error } = await supabase
+        .from("users")
+        .update({ copied: updatedTexts })
+        .eq("email", user.email);
+
+      if (error) throw error;
+
+      setCopiedTexts(updatedTexts);
+      setEditingIndex(null);
+      setEditText("");
+    } catch (error) {
+      console.error("Error updating text:", error);
     }
   };
 
@@ -134,18 +180,22 @@ export default function List() {
     return <div className="text-center">Loading...</div>;
   }
 
-  // Sort copiedTexts by count in descending order
-  const sortedCopiedTexts = copiedTexts.sort((a, b) => b.count - a.count);
+  const sortedCopiedTexts = copiedTexts.sort((a, b) => {
+    if (a.fav === b.fav) {
+      return b.count - a.count;
+    }
+    return b.fav ? 1 : -1;
+  });
 
   return (
-    <div className="w-3/4 mx-auto p-4 rounded-lg shadow-md text-white">
+    <div className="md:w-3/4 sm:w-5/6 mx-auto p-4 rounded-lg shadow-md">
       <link
         rel="stylesheet"
         href="https://unicons.iconscout.com/release/v4.0.8/css/solid.css"
-      ></link>
+      />
       <div className="mb-4 flex justify-between px-3">
         <h2 className="text-2xl">Your Clipboard</h2>
-        <button onClick={() => setView(!view)} className="text-3xl">
+        <button onClick={() => setView(!view)} className="hidden md:block text-3xl">
           {view ? (
             <i className="uil uil-list-ul"></i>
           ) : (
@@ -160,7 +210,7 @@ export default function List() {
           {sortedCopiedTexts.map((item, index) => (
             <li
               key={index}
-              className={`p-4 space-y-4 bg-black border rounded-md`}
+              className={`p-4 space-y-4 border rounded-md ${theme === "dark" ? "text-white bg-black" : "border-black text-black"}`}
               style={{ height: "auto" }}
             >
               <div className="flex justify-end space-x-4 text-2xl">
@@ -190,13 +240,39 @@ export default function List() {
                 >
                   <i className="uil uil-trash-alt"></i>
                 </button>
+                <button
+                  onClick={() => handleEdit(index, item.text)}
+                  className="text-green-500 hover:text-green-700 transition"
+                >
+                  <i className="uil uil-edit"></i>
+                </button>
               </div>
-              <p>{item.text}</p>
+              {editingIndex === index ? (
+                <div>
+                  <textarea
+                    ref={textareaRef}
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    className={`w-full p-2 mt-2 outline-none border rounded-lg scrollbar-none resize-none overflow-hidden" ${theme === "dark" ? "text-white bg-black" : "border-black"}`}
+                  />
+                  <button
+                    onClick={handleSaveEdit}
+                    className="mt-2 text-white bg-green-500 p-2 rounded"
+                  >
+                    Save Edit
+                  </button>
+                </div>
+              ) : (
+                <p>{item.text}</p>
+              )}
+              <p className="text-sm text-gray-500">
+                Copied {item.count} times
+              </p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-400">No texts saved yet.</p>
+        <p className="text-center">No copied texts available</p>
       )}
     </div>
   );
