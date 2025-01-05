@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* globals.css */
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  #__next {
+    height: 100%;
+  }
+  

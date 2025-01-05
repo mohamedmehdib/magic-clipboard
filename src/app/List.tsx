@@ -79,6 +79,21 @@ export default function List() {
       await navigator.clipboard.writeText(text);
       setCopy(index);
 
+      const updatedTexts = copiedTexts.map((item, i) =>
+        i === index ? { ...item, count: item.count + 1 } : item
+      );
+
+      if (user && user.email) {
+        const { error } = await supabase
+          .from("users")
+          .update({ copied: updatedTexts })
+          .eq("email", user.email);
+
+        if (error) throw error;
+
+        setCopiedTexts(updatedTexts);
+      }
+
       setTimeout(() => {
         setCopy(-1);
       }, 5000);
@@ -119,6 +134,9 @@ export default function List() {
     return <div className="text-center">Loading...</div>;
   }
 
+  // Sort copiedTexts by count in descending order
+  const sortedCopiedTexts = copiedTexts.sort((a, b) => b.count - a.count);
+
   return (
     <div className="w-3/4 mx-auto p-4 rounded-lg shadow-md text-white">
       <link
@@ -135,11 +153,11 @@ export default function List() {
           )}
         </button>
       </div>
-      {copiedTexts.length > 0 ? (
+      {sortedCopiedTexts.length > 0 ? (
         <ul
           className={`grid gap-4 ${view ? "grid-cols-2" : "flex flex-col"}`}
         >
-          {copiedTexts.map((item, index) => (
+          {sortedCopiedTexts.map((item, index) => (
             <li
               key={index}
               className={`p-4 space-y-4 bg-black border rounded-md`}
