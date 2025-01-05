@@ -38,7 +38,7 @@ export default function Navbar() {
       ></link>
 
       <button
-        className="fixed z-20 md:hidden text-xl sm:text-3xl p-5 right-0 rounded-bl-xl"
+        className={`fixed z-20 md:hidden text-xl sm:text-3xl p-5 right-0 rounded-bl-xl ${theme === "dark" ? "bg-black" : "bg-white"}`}
         onClick={() => setOpen(!open)}
       >
         {open ? (
@@ -49,7 +49,7 @@ export default function Navbar() {
       </button>
 
       <div
-        className={`h-screen w-full z-10 md:w-1/5 fixed p-5 md:border-r transition-all ${open ? "-translate-x-full" : ""} ${theme === "dark" ? "border-white/50" : "border-black/50"} my-6`}
+        className={`h-screen w-full z-10 md:w-1/5 fixed p-5 md:border-r transition-all ${open ? "-translate-x-full" : ""} ${theme === "dark" ? "border-white/50 bg-black" : "border-black/50 bg-white"}`}
       >
         <div className={ul.className + " text-2xl lg:text-3xl font-semibold mb-6"}>
           Magic Clipboard!
