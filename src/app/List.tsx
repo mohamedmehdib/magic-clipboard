@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import supabase from "../lib/supabaseClient";
 import { useAuth } from "@/lib/useAuth";
 
@@ -15,7 +15,7 @@ export default function List() {
   const [copy, setCopy] = useState(-1);
   const [view, setView] = useState(true);
 
-  const fetchCopiedTexts = async () => {
+  const fetchCopiedTexts = useCallback(async () => {
     if (!user || !user.email) return;
 
     try {
@@ -33,7 +33,7 @@ export default function List() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const toggleFavorite = async (index: number) => {
     if (!user || !user.email) return;
@@ -113,7 +113,7 @@ export default function List() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user,fetchCopiedTexts]);
+  }, [user, fetchCopiedTexts]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
