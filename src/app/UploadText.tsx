@@ -73,7 +73,7 @@ export default function UploadText() {
           placeholder="Enter text"
           value={text}
           onChange={handleTextChange}
-          className={`flex-grow p-3 mb-4 border-2 border-white focus:outline-none resize-none rounded-md ${theme === "dark" ? "text-white bg-black" : "border-black"}`}
+          className={`flex-grow p-3 mb-4 border-2 focus:outline-none resize-none rounded-md ${theme === "dark" ? "border-white bg-black" : "border-black"}`}
           style={{ minHeight: "25vh", overflow: "hidden" }}
         />
         <button

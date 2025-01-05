@@ -154,22 +154,25 @@ export default function List() {
     fetchCopiedTexts();
 
     const channel = supabase
-      .channel("realtime:users")
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "users",
-          filter: `email=eq.${user.email}`,
-        },
-        (payload) => {
-          if (payload.new?.copied) {
-            setCopiedTexts(payload.new.copied);
-          }
+    .channel("realtime:users")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "users",
+        filter: `email=eq.${user.email}`,
+      },
+      (payload) => {
+        if (payload.new && Array.isArray(payload.new.copied)) {
+          setCopiedTexts(payload.new.copied);
+        } else {
+          console.warn("Unexpected payload format:", payload);
         }
-      )
-      .subscribe();
+      }
+    )
+    .subscribe();
+  
 
     return () => {
       supabase.removeChannel(channel);
