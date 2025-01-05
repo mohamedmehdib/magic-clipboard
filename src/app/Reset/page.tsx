@@ -21,8 +21,12 @@ export default function ResetPassword() {
       if (error) throw error;
 
       setMessage("A password reset link has been sent to your email.");
-    } catch (error: any) {
-      setMessage(error.message || "Something went wrong. Please try again.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message || "Something went wrong. Please try again.");
+      } else {
+        setMessage("An unknown error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

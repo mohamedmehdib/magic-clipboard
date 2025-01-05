@@ -22,8 +22,12 @@ export default function UpdatePassword() {
 
       setMessage("Password updated successfully!");
       setTimeout(() => router.push("/sign-in"), 2000);
-    } catch (error: any) {
-      setMessage(error.message || "Something went wrong. Please try again.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message || "Something went wrong. Please try again.");
+      } else {
+        setMessage("An unknown error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
