@@ -49,7 +49,7 @@ export default function Navbar() {
       </button>
 
       <div
-        className={`h-screen w-full z-10 md:w-1/5 fixed p-5 md:border-r transition-all ${open ? "-translate-x-full" : ""} ${theme === "dark" ? "border-white/50 bg-black" : "border-black/50 bg-white"}`}
+        className={`h-screen w-full z-10 md:w-1/5 fixed p-5 md:transition-none transition-all ${open ? "-translate-x-full" : ""} `}
       >
         <div className={ul.className + " text-2xl lg:text-3xl font-semibold mb-6"}>
           Magic Clipboard!
@@ -59,7 +59,7 @@ export default function Navbar() {
           {!user ? (
             <Link
               href="/SignIn"
-              className="bg-green-500 hover:bg-green-700 transition-all duration-300 p-3 w-fit flex justify-center items-center font-medium rounded-lg shadow-md hover:shadow-xl"
+              className="bg-green-500 hover:bg-green-700 transition-all p-3 w-fit flex justify-center items-center font-medium rounded-lg shadow-md hover:shadow-xl"
             >
               Sign In
             </Link>

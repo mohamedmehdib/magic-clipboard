@@ -256,7 +256,7 @@ export default function List() {
                     ref={textareaRef}
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
-                    className={`w-full p-2 mt-2 outline-none border rounded-lg scrollbar-none resize-none overflow-hidden" ${theme === "dark" ? "text-white bg-black" : "border-black"}`}
+                    className={`w-full p-2 mt-2 outline-none border rounded-lg scrollbar-none resize-none " ${theme === "dark" ? "text-white bg-black" : "border-black"}`}
                   />
                   <button
                     onClick={handleSaveEdit}
