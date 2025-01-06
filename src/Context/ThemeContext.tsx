@@ -24,7 +24,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     setTheme(newTheme);
     document.body.classList.toggle("dark", newTheme === "dark");
   };
-console.log(theme)
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

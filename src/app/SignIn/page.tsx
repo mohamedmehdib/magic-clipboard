@@ -28,7 +28,6 @@ const SignIn = () => {
         return;
       }
 
-      console.log("Auth data:", authData);
 
       if (rememberMe) {
         localStorage.setItem('email', email);

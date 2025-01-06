@@ -66,7 +66,7 @@ export default function UploadText() {
         rel="stylesheet"
         href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
       ></link>
-      <h2 className="text-xl md:text-2xl mb-4">Add text to your Clipboard!</h2>
+      <h2 className="text-xl md:text-2xl mb-4 py-5">Add text to your Clipboard!</h2>
 
       <div className="relative flex flex-col">
         <textarea
