@@ -12,6 +12,7 @@ export default function Navbar() {
   const { user } = useAuth();
   const { toggleTheme, theme } = useTheme();
   const [open, setOpen] = useState(true);
+  const [signingIn, setSigningIn] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +31,15 @@ export default function Navbar() {
     };
   }, []);
 
+  const handleSignInClick = () => {
+    setSigningIn(true);
+
+    // Simulating a sign-in delay (remove this in a real app)
+    setTimeout(() => {
+      setSigningIn(false);
+    }, 2000);
+  };
+
   return (
     <div>
       <link
@@ -38,7 +48,9 @@ export default function Navbar() {
       ></link>
 
       <button
-        className={`fixed z-20 md:hidden text-xl sm:text-3xl p-5 right-0 rounded-bl-xl ${theme === "dark" ? "bg-black" : "bg-white"}`}
+        className={`fixed z-20 md:hidden text-xl sm:text-3xl p-5 right-0 rounded-bl-xl ${
+          theme === "dark" ? "bg-black" : "bg-white"
+        }`}
         onClick={() => setOpen(!open)}
       >
         {open ? (
@@ -49,7 +61,9 @@ export default function Navbar() {
       </button>
 
       <div
-        className={`h-screen w-full z-10 md:w-1/5 fixed p-5 md:transition-none transition-all ${open ? "-translate-x-full" : ""} `}
+        className={`h-screen w-full z-10 md:w-1/5 fixed p-5 md:transition-none transition-all ${
+          open ? "-translate-x-full" : ""
+        }`}
       >
         <div className={ul.className + " text-2xl lg:text-3xl font-semibold mb-6"}>
           Magic Clipboard!
@@ -59,9 +73,12 @@ export default function Navbar() {
           {!user ? (
             <Link
               href="/SignIn"
-              className="bg-green-500 hover:bg-green-700 transition-all p-3 w-fit flex justify-center items-center font-medium rounded-lg shadow-md hover:shadow-xl"
+              className={`bg-green-500 hover:bg-green-700 transition-all p-3 w-fit flex justify-center items-center font-medium rounded-lg shadow-md hover:shadow-xl text-white ${
+                signingIn ? "opacity-50 pointer-events-none" : ""
+              }`}
+              onClick={handleSignInClick}
             >
-              Sign In
+              {signingIn ? "Signing In..." : "Sign In"}
             </Link>
           ) : (
             <SignOut />
@@ -71,17 +88,21 @@ export default function Navbar() {
         <hr className={`${theme === "dark" ? "border-white/50" : "border-black/50"} my-6`} />
 
         <div className="my-5">
-          <button 
+          <button
             onClick={toggleTheme}
-            className={`${theme === "dark" ? "bg-white text-black" : "bg-black text-white"} h-14 w-14 flex justify-center items-center text-3xl rounded`}>
-            {theme !== "dark" ?
-            <i className="uil uil-moon"></i>:
-            <i className="uil uil-sun"></i>}
+            className={`${
+              theme === "dark" ? "bg-white text-black" : "bg-black text-white"
+            } h-14 w-14 flex justify-center items-center text-3xl rounded`}
+          >
+            {theme !== "dark" ? (
+              <i className="uil uil-moon"></i>
+            ) : (
+              <i className="uil uil-sun"></i>
+            )}
           </button>
         </div>
 
         <hr className={`${theme === "dark" ? "border-white/50" : "border-black/50"} my-6`} />
-
       </div>
     </div>
   );

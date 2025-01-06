@@ -20,11 +20,11 @@ export default function List() {
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { theme } = useTheme();
-  
+
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = 'auto';
+      textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [editText]);
@@ -95,7 +95,7 @@ export default function List() {
       } else {
         document.execCommand("copy", true, text);
       }
-      
+
       setCopy(index);
 
       const updatedTexts = copiedTexts.map((item, i) =>
@@ -154,30 +154,33 @@ export default function List() {
     fetchCopiedTexts();
 
     const channel = supabase
-    .channel("realtime:users")
-    .on(
-      "postgres_changes",
-      {
-        event: "UPDATE",
-        schema: "public",
-        table: "users",
-        filter: `email=eq.${user.email}`,
-      },
-      (payload) => {
-        if (payload.new && Array.isArray(payload.new.copied)) {
-          setCopiedTexts(payload.new.copied);
-        } else {
-          console.warn("Unexpected payload format:", payload);
+      .channel("realtime:users")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "users",
+          filter: `email=eq.${user.email}`,
+        },
+        (payload) => {
+          if (payload.new && Array.isArray(payload.new.copied)) {
+            setCopiedTexts(payload.new.copied);
+          } else {
+            console.warn("Unexpected payload format:", payload);
+          }
         }
-      }
-    )
-    .subscribe();
-  
+      )
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
   }, [user, fetchCopiedTexts]);
+
+  if (!user) {
+    return <div className="text-center">Please log in to view your clipboard.</div>;
+  }
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
@@ -213,7 +216,9 @@ export default function List() {
           {sortedCopiedTexts.map((item, index) => (
             <li
               key={index}
-              className={`p-4 space-y-4 border rounded-md ${theme === "dark" ? "text-white bg-black" : "border-black text-black"}`}
+              className={`p-4 space-y-4 border rounded-md ${
+                theme === "dark" ? "text-white bg-black" : "border-black text-black"
+              }`}
               style={{ height: "auto" }}
             >
               <div className="flex justify-end space-x-4 text-2xl">
@@ -256,7 +261,10 @@ export default function List() {
                     ref={textareaRef}
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
-                    className={`w-full p-2 mt-2 outline-none border rounded-lg scrollbar-none resize-none " ${theme === "dark" ? "text-white bg-black" : "border-black"}`}
+                    className={`w-full p-2 mt-2 outline-none border rounded-lg resize-none ${
+                      theme === "dark" ? "text-white bg-black" : "border-black"
+                    }`}
+                    style={{ overflow: "hidden" }}
                   />
                   <button
                     onClick={handleSaveEdit}
