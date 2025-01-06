@@ -34,7 +34,6 @@ export default function Navbar() {
   const handleSignInClick = () => {
     setSigningIn(true);
 
-    // Simulating a sign-in delay (remove this in a real app)
     setTimeout(() => {
       setSigningIn(false);
     }, 2000);
@@ -49,7 +48,7 @@ export default function Navbar() {
 
       <button
         className={`fixed z-20 md:hidden text-xl sm:text-3xl p-5 right-0 rounded-bl-xl transition-all ${
-          theme === "dark" ? "bg-black" : "bg-white"
+          theme === "dark" ? "bg-black text-white" : "bg-white text-black"
         } `}
         onClick={() => setOpen(!open)}
       >
