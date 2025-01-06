@@ -61,7 +61,7 @@ export default function UploadText() {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-10 sm:p-10 md:p-14 rounded-lg shadow-md">
+    <div className="max-w-xl mx-auto px-4 sm:p-10 md:p-14 rounded-lg -md">
       <link
         rel="stylesheet"
         href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"

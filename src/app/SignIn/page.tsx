@@ -56,7 +56,7 @@ const SignIn = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black text-white">
+    <div className="flex justify-center items-center min-h-screen bg-black text-white p-2">
       <div className="p-8 bg-black border-2 rounded-lg w-80">
         <h2 className="text-2xl font-semibold mb-4">Sign In</h2>
         <input
