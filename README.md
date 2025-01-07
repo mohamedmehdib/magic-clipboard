@@ -30,5 +30,5 @@ Follow these steps to set up Magic Clipboard on your local machine.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/magic-clipboard.git
+   git clone https://github.com/mohamedmehdib/magic-clipboard
    cd magic-clipboard
