@@ -44,7 +44,7 @@ export default function UpdatePassword() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white">
+    <div className="min-h-screen flex items-center justify-center bg-black p-2 text-white">
       <div className="bg-black border-4 p-8 m-4 rounded shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-4">Update Password</h1>
         {message && (
