@@ -7,7 +7,6 @@ body {
     color: black;
   }
   
-  /* Dark mode styles */
   body.dark {
     background-color: black;
     color: white;

@@ -10,7 +10,7 @@ export const useAuth = () => {
       const { data: sessionData, error } = await supabase.auth.getSession();
 
       if (error) {
-        console.error('Error fetching session:', error.message); // Handle error
+        console.error('Error fetching session:', error.message);
         return;
       }
 
