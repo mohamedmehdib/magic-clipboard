@@ -3,7 +3,7 @@ import supabase from "../lib/supabaseClient";
 import { useAuth } from "@/lib/useAuth";
 import { useTheme } from "@/Context/ThemeContext";
 
-export default function UploadText() {
+export default function UploadText({ onUpload }: { onUpload: () => void }) {
   const { user } = useAuth();
   const [text, setText] = useState("");
   const { theme } = useTheme();
@@ -27,7 +27,7 @@ export default function UploadText() {
         const newText = {
           text,
           fav: false,
-          count: 0,  
+          count: 0,
         };
 
         const updatedCopied = userData?.copied
@@ -43,6 +43,7 @@ export default function UploadText() {
 
         setText("");
         alert("Text uploaded successfully!");
+        onUpload();
       } catch (error) {
         console.error("Error uploading text:", error);
         alert("Failed to upload text.");
@@ -50,6 +51,7 @@ export default function UploadText() {
     } else {
       alert("Please enter some text.");
     }
+
   };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

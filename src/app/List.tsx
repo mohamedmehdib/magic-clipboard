@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import supabase from "../lib/supabaseClient";
 import { useAuth } from "@/lib/useAuth";
 import { useTheme } from "@/Context/ThemeContext";
+import Loading from "./Loading";
 
 type CopiedText = {
   text: string;
@@ -9,7 +10,7 @@ type CopiedText = {
   count: number;
 };
 
-export default function List() {
+export default function List({ refresh }: { refresh: boolean }) {
   const { user } = useAuth();
   const [copiedTexts, setCopiedTexts] = useState<CopiedText[]>([]);
   const [loading, setLoading] = useState(true);
@@ -150,9 +151,9 @@ export default function List() {
 
   useEffect(() => {
     if (!user || !user.email) return;
-
+  
     fetchCopiedTexts();
-
+  
     const channel = supabase
       .channel("realtime:users")
       .on(
@@ -172,18 +173,19 @@ export default function List() {
         }
       )
       .subscribe();
-
+  
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, fetchCopiedTexts]);
+  }, [user, refresh]);
+  
 
   if (!user) {
     return <div className="text-center">Please log in to view your clipboard.</div>;
   }
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return <div><Loading/></div>;
   }
 
   const sortedCopiedTexts = copiedTexts.sort((a, b) => {
