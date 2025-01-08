@@ -14,7 +14,7 @@ export default function Main() {
     <div className={`min-h-screen md:w-4/5 md:float-right border-l space-y-5 ${theme === "dark" ? "border-white/50 bg-black text-white" : "border-black/50 bg-white text-black"}`}>
       <UploadText onUpload={() => setRefresh((prev) => !prev)} />
       <List refresh={refresh} />
-        <Footer/>
+      <Footer/>
     </div>
   );
 }
